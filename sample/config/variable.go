@@ -1,7 +1,7 @@
 package config
 
 type configMain struct {
-	SampleConfig *sampleCustomConfig
+	SampleCustomConfig *sampleCustomConfig
 }
 
 type sampleCustomConfig struct {

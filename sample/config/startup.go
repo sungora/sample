@@ -35,7 +35,7 @@ func (comp *componentTyp) Init(cfg *core.ConfigRoot) (err error) {
 	}
 
 	// Назанчение конфигураций
-	SampleCustomConfig = config.SampleConfig
+	SampleCustomConfig = config.SampleCustomConfig
 
 	return
 }
