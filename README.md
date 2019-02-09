@@ -9,7 +9,7 @@
 #### use app
 Собираем приложение в режиме модуля и запускаем
 
-    go build -mod vendor -o ../bin/sample && ../bin/sample
+    go build -mod vendor -o ../../bin/sample && ../../bin/sample
 
 #### developer
 
@@ -17,8 +17,13 @@
 должны начинаться с названия самого моудля (sample) к кторому они относятся.
 
 #### help
-Создание и загрузка зависимостей
 
-    go mod init sample  инициализация модуля
-    go mod vendor       скачивание зависимостей
+Контроль зависимостей
+
+    make dep
+    make depup  (обновление существующих зависимостей)
+
+Сборка приложения
+
+    make build
 

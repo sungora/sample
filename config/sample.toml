@@ -1,7 +1,6 @@
 # Основная конфигурация
 SessionTimeout = 14400
 TimeZone = "Europe/Moscow"
-UseDB = true
 Mode = "dev"
 
 [Lg]

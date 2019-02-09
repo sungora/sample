@@ -12,7 +12,7 @@ github.com/jinzhu/inflection
 github.com/lib/pq
 github.com/lib/pq/hstore
 github.com/lib/pq/oid
-# github.com/sungora/app v1.0.0
+# github.com/sungora/app v1.0.4
 github.com/sungora/app/core
 github.com/sungora/app/server
 github.com/sungora/app/lg
