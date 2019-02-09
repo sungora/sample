@@ -12,18 +12,12 @@ dep-init:
 
 # Зависимости
 dep: dep-init
-	@if [ ! -f $(DIR)/src//$(APP)/go.mod ]; then \
-		cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod init $(APP); \
-	fi
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go get;
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod tidy;
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod vendor;
 .PHONY: dep
 
 depup: dep-init
-	@if [ ! -f $(DIR)/src//$(APP)/go.mod ]; then \
-		cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod init $(APP); \
-	fi
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go get -u;
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod tidy;
 	cd $(DIR)/src/$(APP); GO111MODULE="on" GOPATH="$(DIR)" go mod vendor;
