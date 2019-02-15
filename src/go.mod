@@ -1,4 +1,4 @@
-module sample
+module global
 
 require (
 	cloud.google.com/go v0.36.0 // indirect
@@ -13,6 +13,6 @@ require (
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/sungora/app v1.0.4
-	golang.org/x/crypto v0.0.0-20190208162236-193df9c0f06f // indirect
+	golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 )

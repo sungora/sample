@@ -8,6 +8,8 @@
 *.idea
 
 bin
+pkg
 log
 logs
-pkg
+test
+/config
