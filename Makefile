@@ -10,7 +10,6 @@ dep:
 	@if [ ! -f $(DIR)/src/go.mod ]; then \
 		cd $(DIR)/src; GO111MODULE="on" GOPATH="$(DIR)" go mod init $(APP); \
 	fi
-	cd $(DIR)/src; GO111MODULE="on" GOPATH="$(DIR)" go get;
 	cd $(DIR)/src; GO111MODULE="on" GOPATH="$(DIR)" go mod tidy;
 	cd $(DIR)/src; GO111MODULE="on" GOPATH="$(DIR)" go mod vendor;
 .PHONY: dep
