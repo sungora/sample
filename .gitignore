@@ -12,4 +12,4 @@ pkg
 log
 logs
 test
-/config
+#/config
