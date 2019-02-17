@@ -47,17 +47,12 @@ func (comp *componentTyp) Init(cfg *core.ConfigRoot) (err error) {
 func (comp *componentTyp) Start() (err error) {
 	switch config.Server.Proto {
 	case "http":
-
-		core.Dumper(config)
-
 		Server := &http.Server{
 			Addr:           fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port),
 			Handler:        new(serverHttp),
 			ReadTimeout:    time.Second * time.Duration(config.Server.ReadTimeout),
 			WriteTimeout:   time.Second * time.Duration(config.Server.WriteTimeout),
-			IdleTimeout:    time.Second * time.Duration(config.Server.IdleTimeout),
 			MaxHeaderBytes: config.Server.MaxHeaderBytes,
-			TLSConfig:      nil,
 		}
 		if comp.store, err = net.Listen("tcp", Server.Addr); err != nil {
 			return
