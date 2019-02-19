@@ -15,8 +15,8 @@ github.com/lib/pq/oid
 # github.com/sungora/app v1.0.5
 github.com/sungora/app/core
 github.com/sungora/app/server
-github.com/sungora/app/lg
 github.com/sungora/app/workflow
+github.com/sungora/app/lg
 github.com/sungora/app/lg/message
 # google.golang.org/appengine v1.4.0
 google.golang.org/appengine/cloudsql

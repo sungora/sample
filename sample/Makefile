@@ -31,7 +31,7 @@ run:
 help:
 	@echo "Usage: make [target]"
 	@echo "  target is:"
-	@echo "    dep		             - Загрузка и обновление зависимостей"
-	@echo "    build                 - Компиляция приложения"
-	@echo "    run 		             - Запуск приложения"
+	@echo "    dep		- Загрузка и обновление зависимостей"
+	@echo "    build	- Компиляция приложения"
+	@echo "    run 		- Запуск приложения"
 .PHONY: help
