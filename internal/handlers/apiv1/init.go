@@ -5,7 +5,7 @@ import (
 
 	"sample/internal/handlers/apiv1/groups"
 
-	"sample/internal/handlers/middle"
+	"sample/internal/middle"
 
 	"sample/internal/handlers/apiv1/users"
 
@@ -16,7 +16,7 @@ func Routes() http.Handler {
 	r := chi.NewRouter()
 	r.Use(middle.SampleOne)
 	r.HandleFunc("/", PageApiV1)
-	// routes for "users" resource
+	// sample routes for "users" resource
 	r.Route("/user", func(r chi.Router) {
 		r.Use(middle.SampleTwo)
 		r.Get("/", users.Gets)        // array /user
@@ -30,7 +30,7 @@ func Routes() http.Handler {
 		})
 
 	})
-	// routes for "groups" resource
+	// sample routes for "groups" resource
 	r.Route("/group", func(r chi.Router) {
 		r.Use(middle.SampleFour)
 		r.Get("/", groups.Gets)        // array /group

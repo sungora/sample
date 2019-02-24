@@ -3,36 +3,46 @@ package groups
 
 import (
 	"net/http"
+
+	"github.com/sungora/app/core"
+
+	"sample/internal/middle"
 )
 
 // Gets
 func Gets(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsGets"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // Post
 func Post(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsPost"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // Options
 func Options(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsOptions"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // Get
 func Get(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsGet"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // Put
 func Put(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsPut"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // Delete
 func Delete(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("GroupsDelete"))
+	var rw = r.Context().Value(middle.KEY_RW).(*core.RW)
+	rw.ResponseJsonApi200("Users", 0, "OK")
 }
 
 // // GET действие по умолчанию

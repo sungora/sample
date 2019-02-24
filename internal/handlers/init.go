@@ -1,6 +1,13 @@
 package handlers
 
 import (
+	"os"
+	"time"
+
+	"sample/internal/handlers/page"
+
+	"sample/internal/middle"
+
 	"sample/internal/handlers/apiv1"
 
 	"github.com/BurntSushi/toml"
@@ -8,8 +15,6 @@ import (
 
 	"github.com/sungora/app/core"
 	"github.com/sungora/app/server"
-
-	"os"
 )
 
 // init регистрация компонента в приложении
@@ -45,13 +50,14 @@ func (comp *componentTyp) Init(cfg *core.ConfigRoot) (err error) {
 		return
 	}
 
-	var route = chi.NewRouter();
-	route.HandleFunc("/", PageMain)
-	route.HandleFunc("/api", PageApi)
+	var r = chi.NewRouter();
+	r.NotFound(middle.NotFound)
+	r.Use(middle.Main(time.Second*time.Duration(config.Server.WriteTimeout) - time.Millisecond))
 
-	route.Mount("/api/v1", apiv1.Routes())
+	r.Mount("/", page.Routes())
+	r.Mount("/api/v1", apiv1.Routes())
 
-	comp.serverHTTP = server.NewHandlerHttp(config.Server, route)
+	comp.serverHTTP = server.NewHandlerHttp(config.Server, r)
 
 	return
 }
