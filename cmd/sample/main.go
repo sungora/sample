@@ -3,15 +3,18 @@ package main
 import (
 	"os"
 
-	"github.com/sungora/app/core"
+	"sample/internal/sample"
 
-	_ "sample/internal/config"
-	_ "sample/internal/handlers"
-	_ "sample/internal/model"
-	_ "sample/internal/worker"
+	"github.com/sungora/app/core"
 )
 
 func main() {
+
+	if 0 != core.Init() {
+		os.Exit(1)
+	}
+
+	sample.Init()
 
 	os.Exit(core.Start())
 
