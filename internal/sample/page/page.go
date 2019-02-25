@@ -11,8 +11,8 @@ import (
 	"sample/internal/sample/model"
 )
 
-// Index главная страница
-func Index(w http.ResponseWriter, r *http.Request) {
+// Main главная страница
+func Main(w http.ResponseWriter, r *http.Request) {
 	var rw = r.Context().Value(mid.KeyRW).(*core.RW)
 	var err error
 
@@ -55,8 +55,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// IndexApi страница api
-func IndexApi(w http.ResponseWriter, r *http.Request) {
+// Api страница api
+func Api(w http.ResponseWriter, r *http.Request) {
 	var rw = r.Context().Value(mid.KeyRW).(*core.RW)
 	rw.ResponseHtml("IndexApi", 200)
 }

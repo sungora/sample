@@ -17,8 +17,6 @@ const ModName string = "sample"
 
 func Init() (code int) {
 
-	// init app
-
 	// config
 	if 0 < config.Init(ModName) {
 		return

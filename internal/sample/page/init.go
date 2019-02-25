@@ -9,8 +9,8 @@ import (
 func Routes() http.Handler {
 	r := chi.NewRouter()
 
-	r.HandleFunc("/", Index)
-	r.HandleFunc("/api", IndexApi)
+	r.HandleFunc("/", Main)
+	r.HandleFunc("/api", Api)
 	r.Get("/test/{testID}/order/{orderID}/page/{pageID}", Sample) // sample more routes
 
 	return r
