@@ -3,7 +3,7 @@
 DIR := $(realpath -m .)
 APP := $(shell basename $(DIR))
 RUN = sample
-PROJECT_LIST = sample
+PROJECT_LIST = sample pkg
 
 default: help
 
