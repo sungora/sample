@@ -8,7 +8,7 @@ import (
 	"github.com/sungora/app/core"
 	"github.com/sungora/app/servhttp/mid"
 
-	"sample/modules/sample/model"
+	"sample/internal/model"
 )
 
 // Main главная страница

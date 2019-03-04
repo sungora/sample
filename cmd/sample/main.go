@@ -5,12 +5,12 @@ import (
 
 	"github.com/sungora/app/core"
 
-	"sample/internal/sample"
+	"sample/modules/sample"
 )
 
 func main() {
 	// инициализация компонентов
-	if 0 != core.Init() {
+	if 1 == core.Init() {
 		os.Exit(1)
 	}
 

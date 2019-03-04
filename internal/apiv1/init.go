@@ -5,9 +5,9 @@ import (
 
 	"github.com/go-chi/chi"
 
-	"sample/modules/sample/apiv1/groups"
-	"sample/modules/sample/apiv1/users"
-	"sample/modules/sample/middleware"
+	"sample/internal/apiv1/groups"
+	"sample/internal/apiv1/users"
+	"sample/internal/middleware"
 )
 
 func Routes() http.Handler {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"sample/modules/sample/model/users"
+	"sample/internal/model/users"
 
 	"github.com/jinzhu/gorm"
 	"github.com/sungora/app/connect"

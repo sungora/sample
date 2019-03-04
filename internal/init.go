@@ -1,16 +1,16 @@
-package sample
+package internal
 
 import (
 	"github.com/sungora/app/lg"
 	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/workflow"
 
-	"sample/modules/sample/apiv1"
-	"sample/modules/sample/config"
-	"sample/modules/sample/page"
-	"sample/modules/sample/worker/workfour"
-	"sample/modules/sample/worker/workone"
-	"sample/modules/sample/worker/worktwo"
+	"sample/internal/apiv1"
+	"sample/internal/config"
+	"sample/internal/page"
+	"sample/internal/worker/workfour"
+	"sample/internal/worker/workone"
+	"sample/internal/worker/worktwo"
 )
 
 const ModName string = "sample"
