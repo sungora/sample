@@ -9,10 +9,11 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.2
+	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/jinzhu/now v1.0.0 // indirect
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
-	github.com/sungora/app v1.0.10
+	github.com/sungora/app v1.0.0
 	golang.org/x/crypto v0.0.0-20190225124518-7f87c0fbb88b // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 )

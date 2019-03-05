@@ -18,7 +18,13 @@ func Init(suffix string) (code int) {
 	var err error
 
 	// читаем конфигурацию
-	path := core.Config.DirConfig + sep + core.Config.ServiceName + "_" + suffix + ".toml"
+	path := core.Config.DirConfig + sep + core.Config.ServiceName
+	if suffix != "" {
+		path += "_" + suffix + ".toml"
+	} else {
+		path += ".toml"
+	}
+
 	if _, err = toml.DecodeFile(path, config); err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		return 1

@@ -29,7 +29,7 @@ MaxHeaderBytes = 1048576 # Максимальный размер заголов�
 
 [Mysql]
 Host = "tcp(localhost:3306)"
-Name = "accounter"
+Name = "test"
 Login = "root"
 Password = "root"
 Charset = "utf8"

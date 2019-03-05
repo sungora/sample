@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"sample/internal/connect"
 	"sample/internal/model/users"
 
 	"github.com/jinzhu/gorm"
-	"github.com/sungora/app/connect"
 )
 
 // Модель
@@ -94,6 +94,11 @@ func (u *User) BeforeSave(scope *gorm.Scope) error {
 // Также будет вызван после хука при создании
 func (u *User) AfterSave(scope *gorm.Scope) error {
 	return nil
+}
+
+// GetScenario получение сценариев модели
+func GetScenario() *users.ScenarioTyp {
+	return users.Scenario
 }
 
 // custom query

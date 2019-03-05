@@ -3,9 +3,11 @@ package main
 import (
 	"os"
 
-	"github.com/sungora/app/core"
+	"sample/internal"
 
-	"sample/modules/sample"
+	"sample/pkg/sample"
+
+	"github.com/sungora/app/core"
 )
 
 func main() {
@@ -14,8 +16,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// инициализация
+	if 1 == internal.Init() {
+		os.Exit(1)
+	}
+
 	// инициализация модуля
-	sample.Init()
+	if 1 == sample.Init() {
+		os.Exit(1)
+	}
 
 	// запуск приложения
 	os.Exit(core.Start())

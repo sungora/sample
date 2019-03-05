@@ -6,14 +6,14 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/sungora/app/core"
-	"github.com/sungora/app/servhttp/mid"
+	"github.com/sungora/app/servhttp/middleware"
 
 	"sample/internal/model"
 )
 
 // Main главная страница
 func Main(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(mid.KeyRW).(*core.RW)
+	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
 	var err error
 
 	var count int = 10
@@ -57,13 +57,13 @@ func Main(w http.ResponseWriter, r *http.Request) {
 
 // Api страница api
 func Api(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(mid.KeyRW).(*core.RW)
+	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
 	rw.ResponseHtml("IndexApi", 200)
 }
 
 // Sample Пример многоуровневого роутинга и GET параметры
 func Sample(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(mid.KeyRW).(*core.RW)
+	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
 	testID := chi.URLParam(r, "testID")
 	orderID := chi.URLParam(r, "orderID")
 	pageID := chi.URLParam(r, "pageID")
