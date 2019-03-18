@@ -5,27 +5,21 @@ import (
 	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/workflow"
 
-	"sample/pkg/sample/apiv1"
-	"sample/pkg/sample/config"
-	"sample/pkg/sample/page"
-	"sample/pkg/sample/worker/workfour"
-	"sample/pkg/sample/worker/workone"
-	"sample/pkg/sample/worker/worktwo"
+	"sample/internal/sample/config"
+	"sample/internal/sample/worker/workfour"
+	"sample/internal/sample/worker/workone"
+	"sample/internal/sample/worker/worktwo"
 )
 
-const ModuleName string = "sample"
-
 // Init инициализация модуля
-func Init() (code int) {
+func Init(cfg *config.Config) (err error) {
 
 	// config
-	if 0 < config.Init(ModuleName) {
-		return 1
-	}
+	config.Cfg = cfg
 
 	// router
-	servhttp.MountRoutes("/", page.Routes)
-	servhttp.MountRoutes("/api/v1", apiv1.Routes)
+	servhttp.MountRoutes("/", RoutesPage)
+	servhttp.MountRoutes("/api/v1", RoutesApiV1)
 
 	// workers
 	workflow.TaskAddCron(&workone.SampleTaskOne{})

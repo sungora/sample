@@ -1,19 +1,22 @@
-package apiv1
+package sample
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi"
 
-	"sample/pkg/sample/apiv1/groups"
-	"sample/pkg/sample/apiv1/users"
-	"sample/pkg/sample/middleware"
+	"sample/internal/sample/apiv1/groups"
+	"sample/internal/sample/apiv1/users"
+	"sample/internal/sample/middleware"
+	"sample/internal/sample/page"
 )
 
-func Routes() http.Handler {
+// Routes роутинг api запросов /api/v1
+func RoutesApiV1() http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.SampleOne)
-	r.HandleFunc("/", PageApiV1)
+	r.HandleFunc("/", page.ApiV1)
 	// sample routes for "users" resource
 	r.Route("/user", func(r chi.Router) {
 		r.Use(middleware.SampleTwo)
@@ -43,4 +46,18 @@ func Routes() http.Handler {
 
 	})
 	return r
+}
+
+func RoutesPage() http.Handler {
+	r := chi.NewRouter()
+
+	r.HandleFunc("/", page.Main)
+	r.HandleFunc("/api", page.Api)
+	r.Get("/test/{testID}/order/{orderID}/page/{pageID}", page.Sample) // sample more routes
+
+	return r
+}
+
+func Ping(w http.ResponseWriter, r *http.Request) {
+	_ = json.NewEncoder(w).Encode("pong")
 }

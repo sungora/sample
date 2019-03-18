@@ -1,6 +1,5 @@
 # Основная конфигурация
 Core:
-  ServiceName: "sample"
   SessionTimeout: 14400
   TimeZone: "Europe/Moscow"
   Mode: "dev"
@@ -44,3 +43,8 @@ Connect:
     Password: "root"
     Ssl: "disable"
     Charset: "utf8"
+
+Sample:
+Name: "Vasya Pupkin"
+IsAccess: true
+Balance: 65.789

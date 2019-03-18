@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/sungora/app/connect"
 
-	"sample/internal/connect"
-	"sample/pkg/sample/model/users"
+	"sample/internal/sample/model/users"
 )
 
 // Модель

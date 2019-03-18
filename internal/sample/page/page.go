@@ -6,14 +6,13 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/sungora/app/core"
-	"github.com/sungora/app/servhttp/middleware"
+	"github.com/sungora/app/request"
 
-	"sample/pkg/sample/model"
+	"sample/internal/sample/model"
 )
 
 // Main главная страница
 func Main(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
 	var err error
 
 	var count int = 10
@@ -28,8 +27,8 @@ func Main(w http.ResponseWriter, r *http.Request) {
 	var (
 		Variables     = make(map[string]interface{})
 		Functions     = make(map[string]interface{})
-		TplController = core.Config.DirWww + "/controllers/page/sample.html"
-		TplLayout     = core.Config.DirWww + "/layout/index.html"
+		TplController = core.Cfg.DirWww + "/controllers/page/sample.html"
+		TplLayout     = core.Cfg.DirWww + "/layout/index.html"
 	)
 	Variables["Header"] = "Head Control"
 	Variables["User"] = u
@@ -37,33 +36,36 @@ func Main(w http.ResponseWriter, r *http.Request) {
 	// шаблон контроллера
 	var buf bytes.Buffer
 	if buf, err = core.TplCompilation(TplController, Functions, Variables); err != nil {
-		rw.ResponseHtml("<H1>Internal Server Error</H1>", 500)
+		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>", 500)
 		return
 	}
 	if TplLayout == "" {
-		rw.ResponseHtml(buf.String(), 200)
+		request.NewIn(w, r).Html(buf.String())
 		return
 	}
 	// шаблон макета
 	Variables["Content"] = buf.String()
 	if buf, err = core.TplCompilation(TplLayout, Functions, Variables); err != nil {
-		rw.ResponseHtml("<H1>Internal Server Error</H1>", 500)
+		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>", 500)
 		return
 	}
-	rw.ResponseHtml(buf.String(), 200)
+	request.NewIn(w, r).Html(buf.String())
 	return
 
 }
 
 // Api страница api
 func Api(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
-	rw.ResponseHtml("IndexApi", 200)
+	request.NewIn(w, r).Html("IndexApi")
+}
+
+// ApiV1 страница api v1
+func ApiV1(w http.ResponseWriter, r *http.Request) {
+	request.NewIn(w, r).Html("PageApiV1")
 }
 
 // Sample Пример многоуровневого роутинга и GET параметры
 func Sample(w http.ResponseWriter, r *http.Request) {
-	var rw = r.Context().Value(middleware.KeyRW).(*core.RW)
 	testID := chi.URLParam(r, "testID")
 	orderID := chi.URLParam(r, "orderID")
 	pageID := chi.URLParam(r, "pageID")
@@ -72,5 +74,5 @@ func Sample(w http.ResponseWriter, r *http.Request) {
 		orderID,
 		pageID,
 	}
-	rw.ResponseJsonApi200(response, 0, "OK")
+	request.NewIn(w, r).JsonApi200(response, 0, "OK")
 }
