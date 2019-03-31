@@ -5,13 +5,16 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/sungora/app/core"
-	"github.com/sungora/app/request"
 
-	"sample/internal/sample/model"
+	"github.com/sungora/app"
+	"github.com/sungora/app/request"
+	"github.com/sungora/app/tpl"
+
+	"github.com/sungora/sample/internal/core"
+	"github.com/sungora/sample/internal/sample/model"
 )
 
-// Main главная страница
+// Main главная страница /
 func Main(w http.ResponseWriter, r *http.Request) {
 	var err error
 
@@ -27,15 +30,15 @@ func Main(w http.ResponseWriter, r *http.Request) {
 	var (
 		Variables     = make(map[string]interface{})
 		Functions     = make(map[string]interface{})
-		TplController = core.Cfg.DirWww + "/controllers/page/sample.html"
-		TplLayout     = core.Cfg.DirWww + "/layout/index.html"
+		TplController = app.Cfg.DirWww + "/controllers/page/sample.html"
+		TplLayout     = app.Cfg.DirWww + "/layout/index.html"
 	)
 	Variables["Header"] = "Head Control"
 	Variables["User"] = u
 
 	// шаблон контроллера
 	var buf bytes.Buffer
-	if buf, err = core.TplCompilation(TplController, Functions, Variables); err != nil {
+	if buf, err = tpl.Compilation(TplController, Functions, Variables); err != nil {
 		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>", 500)
 		return
 	}
@@ -45,7 +48,7 @@ func Main(w http.ResponseWriter, r *http.Request) {
 	}
 	// шаблон макета
 	Variables["Content"] = buf.String()
-	if buf, err = core.TplCompilation(TplLayout, Functions, Variables); err != nil {
+	if buf, err = tpl.Compilation(TplLayout, Functions, Variables); err != nil {
 		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>", 500)
 		return
 	}
@@ -54,12 +57,12 @@ func Main(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Api страница api
+// Api страница /api
 func Api(w http.ResponseWriter, r *http.Request) {
 	request.NewIn(w, r).Html("IndexApi")
 }
 
-// ApiV1 страница api v1
+// ApiV1 страница /api/v1
 func ApiV1(w http.ResponseWriter, r *http.Request) {
 	request.NewIn(w, r).Html("PageApiV1")
 }
@@ -74,5 +77,15 @@ func Sample(w http.ResponseWriter, r *http.Request) {
 		orderID,
 		pageID,
 	}
-	request.NewIn(w, r).JsonApi200(response, 0, "OK")
+	request.NewIn(w, r).JsonOk(response, 0, "OK")
+}
+
+// Ping проверка работы приложения /ping
+func Ping(w http.ResponseWriter, r *http.Request) {
+	request.NewIn(w, r).Json("pong")
+}
+
+// Version версия приложения /version
+func Version(w http.ResponseWriter, r *http.Request) {
+	request.NewIn(w, r).Json(core.Cfg.App.Version)
 }

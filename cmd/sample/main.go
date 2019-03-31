@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"sample/init/sample"
+	"github.com/sungora/sample/init/sample"
 )
 
 func main() {
-	os.Exit(sample.Init())
+	os.Exit(sample.Start())
 }
