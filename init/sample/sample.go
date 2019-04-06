@@ -4,14 +4,18 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
+	middlewareChi "github.com/go-chi/chi/middleware"
 	"github.com/sungora/app"
 	"github.com/sungora/app/connect"
 	"github.com/sungora/app/lg"
 	"github.com/sungora/app/servhttp"
+	"github.com/sungora/app/servhttp/middlew"
 	"github.com/sungora/app/workflow"
 
 	"github.com/sungora/sample/internal/core"
+	"github.com/sungora/sample/internal/sample/middleware"
 )
 
 func Start() (code int) {
@@ -59,7 +63,13 @@ func Start() (code int) {
 
 	// APPLICATION
 	// routes
-	routes(componentServer.GetRoute())
+	r := componentServer.GetRoute()
+	r.NotFound(middlew.NotFound)
+	r.Use(middlew.TimeoutContext(time.Second * time.Duration(core.Cfg.Http.WriteTimeout-1)))
+	r.Use(middlewareChi.Recoverer)
+	r.Use(middlewareChi.Logger)
+	r.Use(middleware.SampleRoot)
+	routes(r)
 	// workers
 	workers()
 	// logs
