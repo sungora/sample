@@ -5,7 +5,10 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
+
+	"github.com/sungora/app/lg"
 	"github.com/sungora/app/request"
+	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/tpl"
 
 	"github.com/sungora/sample/internal/core"
@@ -58,6 +61,11 @@ func Sample(w http.ResponseWriter, r *http.Request) {
 		orderID,
 		pageID,
 	}
+
+	ctx := chi.NewRouteContext()
+	servhttp.GetRoute().Match(ctx, r.Method, r.URL.Path)
+	lg.Dumper(ctx.RoutePattern())
+
 	request.NewIn(w, r).JsonOk(response, 0, "OK")
 }
 
