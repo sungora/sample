@@ -2,8 +2,7 @@
 # DIR_ROOT := $(realpath -m ..)
 # APP := $(shell basename $(DIR))
 DIR := $(realpath -m .)
-APP := github.com/sungora/app
-PROJECT_LIST = sample
+APP := github.com/sungora/sample
 
 default: help
 
@@ -18,15 +17,16 @@ dep:
 
 # Сборка
 build:
-	@for dir in $(PROJECT_LIST); do \
-		cd $(DIR)/cmd/$${dir}; go build -i -mod vendor -o $(DIR)/bin/$${dir}; \
-	done
+#	@for dir in $(PROJECT_LIST); do \
+#		cd $(DIR)/cmd/$${dir}; go build -i -mod vendor -o $(DIR)/bin/$${dir}; \
+#	done
+	cd $(DIR); go build -i -mod vendor -o $(DIR)/main;
 .PHONY: build
 
 # Запуск
-sample:
-	cd $(DIR)/cmd/sample; go build -i -mod vendor -o $(DIR)/bin/sample;
-	$(DIR)/bin/sample;
+run:
+	cd $(DIR); go build -i -mod vendor -o $(DIR)/main;
+	$(DIR)/main;
 .PHONY: run
 
 # Help
@@ -34,6 +34,6 @@ help:
 	@echo "Usage: make [target]"
 	@echo "  target is:"
 	@echo "    dep		- Загрузка и обновление зависимостей"
-	@echo "    build	- Компиляция указанных в настройке приложений"
-	@echo "    sample	- Запуск приложения sample"
+	@echo "    build	- Компиляция приложения"
+	@echo "    run		- Компиляция и запуск приложения"
 .PHONY: help
