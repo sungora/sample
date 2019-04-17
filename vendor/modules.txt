@@ -13,11 +13,12 @@ github.com/jinzhu/gorm/dialects/mysql
 github.com/jinzhu/gorm/dialects/postgres
 # github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
 github.com/jinzhu/inflection
-# github.com/lib/pq v1.0.0
+# github.com/lib/pq v1.1.0
 github.com/lib/pq
 github.com/lib/pq/hstore
 github.com/lib/pq/oid
-# github.com/sungora/app v1.0.40
+github.com/lib/pq/scram
+# github.com/sungora/app v1.0.42
 github.com/sungora/app/request
 github.com/sungora/app/lg
 github.com/sungora/app

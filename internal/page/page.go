@@ -37,13 +37,13 @@ func Main(w http.ResponseWriter, r *http.Request) {
 
 	// шаблон контроллера
 	var buf bytes.Buffer
-	if buf, err = tpl.ParseFile("assets/controllers/page/sample.html", Functions, Variables); err != nil {
+	if buf, err = tpl.ParseFile(core.Cfg.App.DirWork+"/controllers/page/sample.html", Functions, Variables); err != nil {
 		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>"+err.Error(), 500)
 		return
 	}
 	// шаблон макета
 	Variables["Content"] = buf.String()
-	if buf, err = tpl.ParseFile("assets/layout/index.html", Functions, Variables); err != nil {
+	if buf, err = tpl.ParseFile(core.Cfg.App.DirWork+"/layout/index.html", Functions, Variables); err != nil {
 		request.NewIn(w, r).Html("<H1>Internal Server Error</H1>"+err.Error(), 500)
 		return
 	}

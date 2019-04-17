@@ -4,6 +4,7 @@ App:
   TimeZone: "Europe/Moscow"
   Domain: "localhost"
   Mode: "dev"
+  DirWork: "/home/konstantin/work/sample/assets"
 
 Lg:
   Info: true
@@ -32,7 +33,7 @@ Http:
   Cors:
     Use: true
     AllowedOrigins: ["*"]
-    AllowedMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    AllowedMethods: ["GET", "POST", "PATH", "PUT", "DELETE", "OPTIONS"]
     AllowedHeaders: ["Accept", "Authorization", "Content-Type", "X-CSRF-Token"]
     ExposedHeaders: ["Link"]
     AllowCredentials: true
@@ -45,6 +46,7 @@ Connect:
     Login: "root"
     Password: "root"
     Charset: "utf8"
+    Migration: 0
   Postgresql:
     Host: "localhost" # localhost
     Port: 5432
@@ -53,6 +55,7 @@ Connect:
     Password: "postgres"
     Ssl: "disable"
     Charset: "utf8"
+    Migration: 0
 
 Sample:
   Name: "Vasya Pupkin"
