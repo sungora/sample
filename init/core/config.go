@@ -6,6 +6,8 @@ import (
 	"github.com/sungora/app/lg"
 	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/workflow"
+
+	"github.com/sungora/sample/internal/users"
 )
 
 type Config struct {
@@ -14,13 +16,7 @@ type Config struct {
 	Workflow workflow.Config `yaml:"Workflow"`
 	Http     servhttp.Config `yaml:"Http"`
 	Connect  connect.Config  `yaml:"Connect"`
-	Sample   sample          `yaml:"Sample"`
-}
-
-type sample struct {
-	Name     string  `yaml:"Name"`
-	IsAccess bool    `yaml:"IsAccess"`
-	Balance  float64 `yaml:"Balance"`
+	Users    users.Config    `yaml:"Users"`
 }
 
 var Cfg = &Config{}

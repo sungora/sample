@@ -1,9 +1,0 @@
-package users
-
-
-func Init() {
-
-
-
-
-}

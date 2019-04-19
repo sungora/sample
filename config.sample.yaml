@@ -57,7 +57,7 @@ Connect:
     Charset: "utf8"
     Migration: 0
 
-Sample:
+Users:
   Name: "Vasya Pupkin"
   IsAccess: true
   Balance: 65.789

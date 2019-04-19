@@ -3,19 +3,15 @@ package start
 import (
 	"bytes"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/sungora/app/lg"
 	"github.com/sungora/app/request"
-	"github.com/sungora/app/servhttp"
+	"github.com/sungora/app/servhttp/middles"
 	"github.com/sungora/app/tpl"
 
-	"github.com/sungora/app/servhttp/middles"
-
 	"github.com/sungora/sample/init/core"
-	"github.com/sungora/sample/internal/page"
-	"github.com/sungora/sample/internal/users"
 )
 
 func routes(route *chi.Mux) {
@@ -27,29 +23,19 @@ func routes(route *chi.Mux) {
 
 	// Group 1
 	route.Group(func(r chi.Router) {
-		r.HandleFunc("/", page.Main)
-		r.HandleFunc("/api", page.Main)
+		r.HandleFunc("/", HandlerMain)
+		r.HandleFunc("/api", HandlerPing)
 	})
 
-	// Group 2
-	route.Group(func(r chi.Router) {
-		r.Use(users.SamplePing)
-		r.Get("/api/ping", page.Ping)                                      // sample more routes
-		r.Get("/api/info", page.Info)                                      // sample more routes
-		r.Get("/test/{testID}/order/{orderID}/page/{pageID}", page.Sample) // sample more routes
-	})
-
-	route.Mount("/api/v1", users.Routes())
 }
 
-
-// Handler главная страница
+// HandlerMain главная страница
 func HandlerMain(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	var count int = 10
 	// работа с моделью
-	u := users.NewUser(0)
+	u := User{}
 	invoiceID := uint64(8697)
 	u.InvoiceID = &invoiceID
 	name := "Вася пупкин"
@@ -79,9 +65,24 @@ func HandlerMain(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-
-// Ping проверка работы приложения /ping
-func Ping(w http.ResponseWriter, r *http.Request) {
+// HandlerPing проверка работы приложения /ping
+func HandlerPing(w http.ResponseWriter, r *http.Request) {
 	request.NewIn(w, r).Json("pong")
 }
 
+// Модель
+type User struct {
+	ID         uint64     ``
+	InvoiceID  *uint64    ``
+	Nam        *string    ``
+	Age        int        ``
+	Credit     float64    ``
+	IsOnline   bool       `gorm:"not null;default:1;"`
+	Status     string     `gorm:"type:enum('Актив','Пассив','Универсал');not null;default:'Пассив';"`
+	Hobby      *string    `gorm:"type:set('music','sport','reading', 'stamps', 'travel');"`
+	SampleJson *string    `gorm:"type:json;"`
+	Address    *string    `gorm:"type:text;"`
+	CreatedAt  time.Time  ``
+	UpdatedAt  time.Time  ``
+	DeletedAt  *time.Time ``
+}

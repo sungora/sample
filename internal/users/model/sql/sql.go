@@ -7,9 +7,9 @@ func init() {
 	`
 }
 
-type sqlTyp struct {
+type config struct {
 	GetListFilter string
 }
 
 // хранилище пользовательских запросов
-var Sql = new(sqlTyp)
+var Sql = new(config)

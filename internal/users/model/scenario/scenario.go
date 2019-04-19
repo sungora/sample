@@ -70,10 +70,10 @@ func init() {
 	}
 }
 
-type ScenarioTyp struct {
+type Config struct {
 	AdminGrid map[string]map[string]string
 	AdminForm map[string]map[string]string
 }
 
 // хранилище пользовательских запросов
-var Scenario = new(ScenarioTyp)
+var Scenario = new(Config)
