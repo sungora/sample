@@ -1,27 +1,55 @@
-package page
+package start
 
 import (
 	"bytes"
 	"net/http"
 
 	"github.com/go-chi/chi"
-
+	"github.com/go-chi/chi/middleware"
 	"github.com/sungora/app/lg"
 	"github.com/sungora/app/request"
 	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/tpl"
 
-	"github.com/sungora/sample/internal/core"
-	"github.com/sungora/sample/internal/model"
+	"github.com/sungora/app/servhttp/middles"
+
+	"github.com/sungora/sample/init/core"
+	"github.com/sungora/sample/internal/page"
+	"github.com/sungora/sample/internal/users"
 )
 
-// Main главная страница /
-func Main(w http.ResponseWriter, r *http.Request) {
+func routes(route *chi.Mux) {
+
+	route.Use(middles.TimeoutContext(core.Cfg.Http.WriteTimeout))
+	route.Use(middleware.Recoverer)
+	route.Use(middleware.Logger)
+	route.NotFound(middles.NotFound)
+
+	// Group 1
+	route.Group(func(r chi.Router) {
+		r.HandleFunc("/", page.Main)
+		r.HandleFunc("/api", page.Main)
+	})
+
+	// Group 2
+	route.Group(func(r chi.Router) {
+		r.Use(users.SamplePing)
+		r.Get("/api/ping", page.Ping)                                      // sample more routes
+		r.Get("/api/info", page.Info)                                      // sample more routes
+		r.Get("/test/{testID}/order/{orderID}/page/{pageID}", page.Sample) // sample more routes
+	})
+
+	route.Mount("/api/v1", users.Routes())
+}
+
+
+// Handler главная страница
+func HandlerMain(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	var count int = 10
 	// работа с моделью
-	u := model.NewUser(0)
+	u := users.NewUser(0)
 	invoiceID := uint64(8697)
 	u.InvoiceID = &invoiceID
 	name := "Вася пупкин"
@@ -51,30 +79,9 @@ func Main(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// Sample Пример многоуровневого роутинга и GET параметры
-func Sample(w http.ResponseWriter, r *http.Request) {
-	testID := chi.URLParam(r, "testID")
-	orderID := chi.URLParam(r, "orderID")
-	pageID := chi.URLParam(r, "pageID")
-	response := []string{
-		testID,
-		orderID,
-		pageID,
-	}
-
-	ctx := chi.NewRouteContext()
-	servhttp.GetRoute().Match(ctx, r.Method, r.URL.Path)
-	lg.Dumper(ctx.RoutePattern())
-
-	request.NewIn(w, r).JsonOk(response, 0, "OK")
-}
 
 // Ping проверка работы приложения /ping
 func Ping(w http.ResponseWriter, r *http.Request) {
 	request.NewIn(w, r).Json("pong")
 }
 
-// Info информация о приложении
-func Info(w http.ResponseWriter, r *http.Request) {
-	request.NewIn(w, r).Json(core.Cfg)
-}

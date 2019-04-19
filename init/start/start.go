@@ -12,7 +12,7 @@ import (
 	"github.com/sungora/app/servhttp"
 	"github.com/sungora/app/workflow"
 
-	"github.com/sungora/sample/internal/core"
+	"github.com/sungora/sample/init/core"
 )
 
 func Start() (code int) {

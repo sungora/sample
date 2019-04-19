@@ -7,8 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/sungora/app/connect"
 
-	"github.com/sungora/sample/internal/model/scenario"
-	"github.com/sungora/sample/internal/model/sql"
+	"github.com/sungora/sample/internal/users"
 )
 
 // Модель
@@ -98,15 +97,15 @@ func (u *User) AfterSave(scope *gorm.Scope) error {
 }
 
 // GetScenario получение сценариев модели
-func GetScenario() *scenario.ScenarioTyp {
-	return scenario.Scenario
+func GetScenario() *users.ScenarioTyp {
+	return users.Scenario
 }
 
 // custom query
 
 // GetListFilter получение списка пользователей
 func (u *User) GetListFilter(limit int) (userList []*User, err error) {
-	err = connect.GetDB().Raw(sql.Sql.GetListFilter, limit).Scan(&userList).Error
+	err = connect.GetDB().Raw(users.Sql.GetListFilter, limit).Scan(&userList).Error
 	return
 }
 
