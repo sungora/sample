@@ -7,6 +7,10 @@ import (
 	"github.com/sungora/app/workflow"
 )
 
+func init() {
+	workflow.TaskAddCron(&One{})
+}
+
 // Пример задачи работающей по расписанию
 type One struct {
 }

@@ -13,7 +13,6 @@ import (
 	"github.com/sungora/app/workflow"
 
 	"github.com/sungora/sample/init/core"
-	"github.com/sungora/sample/internal/users/start"
 )
 
 func Start() (code int) {
@@ -60,9 +59,8 @@ func Start() (code int) {
 	}
 	app.ComponentAdd(component)
 
-	// APPLICATION
+	// ROUTES
 	routes(route)
-	start.Init(&core.Cfg.Users)
 
 	// START запуск и остановка приложения
 	if err = app.StartLock(); err != nil {
