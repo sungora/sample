@@ -1,22 +1,9 @@
-# Основная конфигурация
 App:
   SessionTimeout: 14400
   TimeZone: "Europe/Moscow"
   Domain: "localhost"
   Mode: "dev"
   DirWork: "/home/konstantin/work/sample/assets"
-
-Lg:
-  Info: true
-  Notice: true
-  Warning: true
-  Error: true
-  Critical: true
-  Fatal: true
-  Traces: true
-  OutStd: true
-  OutFile: ""
-  OutHttp: ""
 
 Workflow:
   Limitch: 1000      # буфер канала задач
@@ -26,14 +13,13 @@ Http:
   Proto: "http"
   Host: "localhost"
   Port: 8080
-  WriteTimeout: 10  # Время ожидания окончания передачи ответа в секундах, по истечении которого соединение сбрасывается
-  ReadTimeout: 10   # Время ожидания web запроса в секундах, по истечении которого соединение сбрасывается
+  WriteTimeout: 60  # Время ожидания окончания передачи ответа в секундах, по истечении которого соединение сбрасывается
+  ReadTimeout: 60   # Время ожидания web запроса в секундах, по истечении которого соединение сбрасывается
   MaxHeaderBytes: 1048576 # Максимальный размер заголовка получаемого от браузера клиента в байтах
   Proxy: "" # format: "http://login:pass@bproxy.msk.mts.ru:3131"
   Cors:
-    Use: true
     AllowedOrigins: ["*"]
-    AllowedMethods: ["GET", "POST", "PATH", "PUT", "DELETE", "OPTIONS"]
+    AllowedMethods: ["HEAD", "GET", "POST", "PATСH", "PUT", "DELETE", "OPTIONS"]
     AllowedHeaders: ["Accept", "Authorization", "Content-Type", "X-CSRF-Token"]
     ExposedHeaders: ["Link"]
     AllowCredentials: true
@@ -46,7 +32,7 @@ Connect:
     Login: "root"
     Password: "root"
     Charset: "utf8"
-    Migration: 0
+    Migration: "/home/konstantin/work/sample/migration/mysql"
   Postgresql:
     Host: "localhost" # localhost
     Port: 5432
@@ -55,7 +41,7 @@ Connect:
     Password: "postgres"
     Ssl: "disable"
     Charset: "utf8"
-    Migration: 0
+    Migration: "/home/konstantin/work/sample/migration/postgres"
 
 Users:
   Name: "Vasya Pupkin"

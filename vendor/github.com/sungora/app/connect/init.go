@@ -1,3 +1,5 @@
+// Deprecated
+// Use db
 package connect
 
 import (
@@ -8,17 +10,13 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// компонент
-type Component struct {
-}
-
 var (
 	config    *Config    // конфигурация
 	component *Component // компонент
 )
 
 // Init инициализация компонента в приложении
-func Init(cfg *Config) (com *Component, err error) {
+func Init(cfg *Config, IsLog bool) (com *Component, err error) {
 	config = cfg
 	component = new(Component)
 	if config.Mysql.Host != "" {
@@ -32,6 +30,9 @@ func Init(cfg *Config) (com *Component, err error) {
 		)); err != nil {
 			return
 		}
+		if IsLog == true {
+			db = db.Debug()
+		}
 	} else if config.Postgresql.Host != "" {
 		if db, err = gorm.Open("postgres", fmt.Sprintf(
 			"host=%s port=%d user=%s dbname=%s password=%s sslmode=%s",
@@ -43,6 +44,9 @@ func Init(cfg *Config) (com *Component, err error) {
 			config.Postgresql.Ssl,
 		)); err != nil {
 			return
+		}
+		if IsLog == true {
+			db = db.Debug()
 		}
 	}
 	return component, nil
@@ -61,4 +65,8 @@ func (comp *Component) Stop() (err error) {
 	}
 
 	return
+}
+
+func GetConfig() *Config {
+	return config
 }

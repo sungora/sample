@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"mime"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,7 +17,7 @@ import (
 type Incoming struct {
 	request       *http.Request
 	response      http.ResponseWriter
-	requestParams map[string][]string
+	QueryFormPath queryFormData
 }
 
 // NewIn Функционал по работе с входящим запросом
@@ -26,23 +25,25 @@ func NewIn(w http.ResponseWriter, r *http.Request) *Incoming {
 	var rw = &Incoming{
 		request:  r,
 		response: w,
+		QueryFormPath: queryFormData{
+			request: r,
+		},
 	}
 	return rw
 }
 
-// GetRequestParam Получение данных запроса пришедших в формате "application/x-www-form-urlencoded".
-func (rw *Incoming) GetRequestParam(name string) map[string][]string {
-	if rw.requestParams != nil {
-		return rw.requestParams
+var errEmptyData = errors.New("Запрос пустой, данные отсутствуют")
+
+// GetBodyJson декодирование полученного тела запроса в формате json в объект
+func (rw *Incoming) GetBodyJson(object interface{}) (err error) {
+	var body []byte
+	if body, err = ioutil.ReadAll(rw.request.Body); err != nil {
+		return
 	}
-	rw.requestParams, _ = url.ParseQuery(rw.request.URL.Query().Encode())
-	if err := rw.request.ParseForm(); err != nil {
-		return rw.requestParams
+	if 0 == len(body) {
+		return errEmptyData
 	}
-	for i, v := range rw.request.Form {
-		rw.requestParams[i] = v
-	}
-	return rw.requestParams
+	return json.Unmarshal(body, object)
 }
 
 // CookieGet Получение куки.
@@ -79,66 +80,26 @@ func (rw *Incoming) CookieRem(name string) {
 	http.SetCookie(rw.response, cookie)
 }
 
-var errEmptyData = errors.New("Запрос пустой, данные отсутствуют")
-
-// BodyDecodeJson декодирование полученного тела запроса в формате json в объект
-func (rw *Incoming) BodyDecodeJson(object interface{}) (err error) {
-	var body []byte
-	if body, err = ioutil.ReadAll(rw.request.Body); err != nil {
-		return
-	}
-	if 0 == len(body) {
-		return errEmptyData
-	}
-	return json.Unmarshal(body, object)
+// Error ответ на запрос с ошибкой
+type Error struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
 }
 
-// обертка api ответа в формате json
-type JsonApi struct {
+// Data ответ на запрос с данными
+type Data struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Error   bool        `json:"error"`
-	Data    interface{} `json:"data,omitempty"`
+	Data    interface{} `json:"data"`
 }
 
-// JsonApi200 положительный ответ api в формате json
-// Deprecated: Use JsonOk
-func (rw *Incoming) JsonApi200(object interface{}, code int, message string) {
-	res := new(JsonApi)
-	res.Code = code
-	res.Message = message
-	res.Error = false
-	res.Data = object
-	rw.Json(res, http.StatusOK)
-}
-
-// JsonOk положительный ответ в формате json (структурированный)
-func (rw *Incoming) JsonOk(object interface{}, code int, message string) {
-	res := new(JsonApi)
-	res.Code = code
-	res.Message = message
-	res.Error = true
-	res.Data = object
-	rw.Json(res, http.StatusOK)
-}
-
-// JsonApi409 отрицательный ответ api в формате json
-// Deprecated: Use JsonError
-func (rw *Incoming) JsonApi409(object interface{}, code int, message string) {
-	res := new(JsonApi)
-	res.Code = code
-	res.Message = message
-	res.Error = true
-	res.Data = object
-	rw.Json(res, http.StatusConflict)
-}
+type Log func(r *http.Request, status int)
 
 // JsonError отрицательный ответ с ошибкой в формате json (структурированный)
 func (rw *Incoming) JsonError(code int, message string, status ...int) {
-	res := new(JsonApi)
+	res := new(Error)
 	res.Code = code
 	res.Message = message
-	res.Error = true
 	if len(status) == 0 {
 		rw.Json(res, http.StatusBadRequest)
 	} else {
@@ -150,36 +111,43 @@ func (rw *Incoming) JsonError(code int, message string, status ...int) {
 func (rw *Incoming) Json(object interface{}, status ...int) {
 	data, err := json.Marshal(object)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
+		_, _ = fmt.Fprintln(os.Stderr, err.Error())
 	}
-	// headers
-	rw.generalHeaderSet("application/json; charset=utf-8", len(data))
 	// Статус ответа
 	if len(status) == 0 {
-		rw.response.WriteHeader(http.StatusOK)
-	} else {
-		rw.response.WriteHeader(status[0])
+		status = append(status, http.StatusOK)
 	}
+	// Заголовки
+	rw.response.WriteHeader(status[0])
+	rw.generalHeaderSet("application/json; charset=utf-8", len(data))
 	// Тело документа
-	_, err = rw.response.Write(data)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
+	_, _ = rw.response.Write(data)
+	// sample from middleware:
+	// r = r.WithContext(context.WithValue(r.Context(), keys.Handler.Log, request.Log(Test)))
+	if log, ok := rw.request.Context().Value(KeyLogHandler).(Log); ok == true {
+		log(rw.request, status[0])
 	}
+	// strings.TrimRight(chi.RouteContext(rw.request.Context()).RoutePattern(), "/")
 }
 
 // Html ответ в html формате
 func (rw *Incoming) Html(con string, status ...int) {
 	data := []byte(con)
-	// headers
-	rw.generalHeaderSet("text/html; charset=utf-8", len(data))
 	// Статус ответа
 	if len(status) == 0 {
-		rw.response.WriteHeader(http.StatusOK)
-	} else {
-		rw.response.WriteHeader(status[0])
+		status = append(status, http.StatusOK)
 	}
+	// Заголовки
+	rw.response.WriteHeader(status[0])
+	rw.generalHeaderSet("text/html; charset=utf-8", len(data))
 	// Тело документа
-	rw.response.Write(data)
+	_, _ = rw.response.Write(data)
+	// sample from middleware:
+	// r = r.WithContext(context.WithValue(r.Context(), keys.Handler.Log, request.Log(Test)))
+	if log, ok := rw.request.Context().Value(KeyLogHandler).(Log); ok == true {
+		log(rw.request, status[0])
+	}
+	// strings.TrimRight(chi.RouteContext(rw.request.Context()).RoutePattern(), "/")
 }
 
 // Static ответ - отдача статических данных
@@ -194,17 +162,15 @@ func (rw *Incoming) Static(path string) (err error) {
 			path += string(os.PathSeparator)
 		}
 		path += "index.html"
+		if fi, err = os.Stat(path); err != nil {
+			rw.Html("<H1>Not Found</H1>", http.StatusNotFound)
+			return
+		}
 	}
 	// content
 	var data []byte
 	if data, err = ioutil.ReadFile(path); err != nil {
-		if fi.IsDir() == true {
-			rw.Html("<H1>Forbidden</H1>", http.StatusForbidden)
-		} else if fi.Mode().IsRegular() == true {
-			rw.Html("<H1>Internal Server Error</H1>", http.StatusInternalServerError)
-		} else {
-			rw.Html("<H1>Not Found</H1>", http.StatusNotFound)
-		}
+		rw.Html("<H1>Internal Server Error</H1>", http.StatusInternalServerError)
 		return
 	}
 	// type

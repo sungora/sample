@@ -33,12 +33,12 @@ swag:
 	swag i -g cmd/app/main.go;
 .PHONY: swag
 
-# Запуск в режиме отладки
+# Запуск в режиме разработки
 run: com
-	$(DIR)/bin/app -c config.yaml -migrate=false -load-routes=false;
+	$(DIR)/bin/app -c config.yaml -migrate=false -load-routes=false -log-db=true;
 .PHONY: run
 
-# Запуск в полном обьеме
+# Запуск в боевом режиме
 runs: swag com
 	$(DIR)/bin/app -c config.yaml;
 .PHONY: runs
@@ -69,8 +69,8 @@ h:
 	@echo "  target is:"
 	@echo "    h			- Вывод этой документации"
 	@echo "    dep			- Загрузка и обновление файла зависимостей (go.mod go.sum)"
-	@echo "    run			- Запуск в режиме отладки с конфигом config.yaml"
-	@echo "    runs		- Запуск в полном обьеме с конфигом config.yaml"
+	@echo "    run			- Запуск в режиме разработки с конфигом config.yaml"
+	@echo "    runs		- Запуск в боевом режиме с конфигом config.yaml"
 	@echo "    mig			- Создание шаблона миграции"
 	@echo "    mig-st		- Статус миграции"
 	@echo "    mig-down		- Миграция на одну позицию вниз"

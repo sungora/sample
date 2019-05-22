@@ -12,13 +12,6 @@ var (
 	component *Component // компонент
 )
 
-// компонент
-type Component struct {
-	fp         *os.File  // запись логов в файл
-	logCh      chan msg  // канал чтения и обработки логов
-	logChClose chan bool // канал управления закрытием работы
-}
-
 // Init инициализация компонента в приложении
 func Init(cfg *Config) (com *Component, err error) {
 	config = cfg
@@ -89,4 +82,8 @@ func (comp *Component) Stop() (err error) {
 	close(comp.logCh)
 	<-comp.logChClose
 	return
+}
+
+func GetConfig() *Config {
+	return config
 }
