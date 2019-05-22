@@ -35,7 +35,7 @@ swag:
 
 # Запуск в режиме разработки
 run: com
-	$(DIR)/bin/app -c config.yaml -migrate=false -load-routes=false -log-db=true;
+	$(DIR)/bin/app -c config.yaml -migrate=false -log-db=true;
 .PHONY: run
 
 # Запуск в боевом режиме
