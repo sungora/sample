@@ -1,0 +1,56 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Описание сервиса",
+        "title": "Sample Service API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "test@test.ru"
+        },
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "{{.Host}}",
+    "basePath": "/api/v1",
+    "paths": {
+        "/ping": {
+            "get": {
+                "tags": [
+                    "General"
+                ],
+                "summary": "проверка доступности сервера",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "Общие запросы и авторизация",
+            "name": "General"
+        }
+    ]
+}

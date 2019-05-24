@@ -38,7 +38,7 @@ run: com
 	$(DIR)/bin/app -c config.yaml -migrate=false -log-db=true;
 .PHONY: run
 
-# Запуск в боевом режиме
+# Запуск в режиме отладки
 runs: swag com
 	$(DIR)/bin/app -c config.yaml;
 .PHONY: runs
@@ -70,7 +70,7 @@ h:
 	@echo "    h			- Вывод этой документации"
 	@echo "    dep			- Загрузка и обновление файла зависимостей (go.mod go.sum)"
 	@echo "    run			- Запуск в режиме разработки с конфигом config.yaml"
-	@echo "    runs		- Запуск в боевом режиме с конфигом config.yaml"
+	@echo "    runs		- Запуск в режиме отладки с конфигом config.yaml"
 	@echo "    mig			- Создание шаблона миграции"
 	@echo "    mig-st		- Статус миграции"
 	@echo "    mig-down		- Миграция на одну позицию вниз"

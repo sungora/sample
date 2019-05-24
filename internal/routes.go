@@ -1,13 +1,16 @@
 package internal
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/sungora/app/request"
 	"github.com/sungora/app/servhttp/middles"
+	"github.com/swaggo/http-swagger"
 
+	"github.com/sungora/sample/docs"
 	"github.com/sungora/sample/internal/api"
 	"github.com/sungora/sample/internal/config"
 	"github.com/sungora/sample/internal/middlep"
@@ -21,8 +24,9 @@ func Routes(router *chi.Mux, cfg *config.Config) {
 	router.Use(middleware.Logger)
 
 	// general
-	//docs.SwaggerInfo.Host = fmt.Sprintf("%s:%d", cfg.App.Domain, cfg.Http.Port)
-	//router.Get("/api/v1/*", httpSwagger.Handler())   // swagger
+	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%d", cfg.App.Domain, cfg.Http.Port)
+	router.Get("/api/v1/*", httpSwagger.Handler()) // swagger
+	router.Get("/api/v1/ping", handlerPing)        // check server work
 
 	// users
 	router.Mount("/api/v1/users", RouteUsers())

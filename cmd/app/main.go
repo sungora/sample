@@ -30,10 +30,6 @@ import (
 //
 // @tag.name General
 // @tag.description Общие запросы и авторизация
-// @tag.name Users
-// @tag.description Пользователи
-// @tag.name Deprecated
-// @tag.description Устаревшее API
 //
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
